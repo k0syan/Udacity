@@ -1,4 +1,4 @@
-package com.example.android.favoritetoys;
+package com.example.favoritetoys;
 
 import org.junit.Test;
 

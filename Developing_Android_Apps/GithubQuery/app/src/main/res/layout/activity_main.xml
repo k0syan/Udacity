@@ -1,19 +1,42 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout
+<LinearLayout
 		xmlns:android="http://schemas.android.com/apk/res/android"
 		xmlns:tools="http://schemas.android.com/tools"
-		xmlns:app="http://schemas.android.com/apk/res-auto"
+		android:orientation="vertical"
 		android:layout_width="match_parent"
 		android:layout_height="match_parent"
+		android:paddingTop="16dp"
+		android:paddingRight="16dp"
+		android:paddingLeft="16dp"
 		tools:context="com.example.githubquery.MainActivity">
 
-	<TextView
-			android:layout_width="wrap_content"
+	<EditText
+			android:id="@+id/et_search_box"
+			android:textSize="22sp"
+			android:layout_width="match_parent"
 			android:layout_height="wrap_content"
-			android:text="Hello World!"
-			app:layout_constraintBottom_toBottomOf="parent"
-			app:layout_constraintLeft_toLeftOf="parent"
-			app:layout_constraintRight_toRightOf="parent"
-			app:layout_constraintTop_toTopOf="parent" />
+			android:hint="Enter query and click search" />
 
-</android.support.constraint.ConstraintLayout>
+	<TextView
+			android:id="@+id/tv_url_display"
+			android:textSize="22sp"
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content"
+			android:layout_marginTop="8dp"
+			android:text="Your search URL will show up here when you click search" />
+
+	<ScrollView
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content"
+			android:layout_marginTop="16dp">
+
+		<TextView
+				android:id="@+id/tv_github_search_result_json"
+				android:textSize="18sp"
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"
+				android:text="Search something to see results" />
+
+	</ScrollView>
+
+</LinearLayout>

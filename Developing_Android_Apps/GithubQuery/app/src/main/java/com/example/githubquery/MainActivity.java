@@ -2,6 +2,7 @@ package com.example.githubquery;
 
 
 import android.content.Context;
+import android.os.AsyncTask;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.Menu;
@@ -38,11 +39,30 @@ public class MainActivity extends AppCompatActivity {
 		URL githubSearchUrl = NetworkUtils.buildUrl(queryText);
 		mUrlDisplayTextView.setText(githubSearchUrl.toString());
 		String githubSearchResults = null;
-		try {
-			githubSearchResults = NetworkUtils.getResponseFromHttpUrl(githubSearchUrl);
-			mSearchResultsTextView.setText(githubSearchResults.toString());
-		} catch (IOException e) {
-			e.printStackTrace();
+		new GithubQueryTask().execute(githubSearchUrl);
+	}
+
+	public class GithubQueryTask extends AsyncTask<URL, Void, String> {
+
+		@Override
+		protected String doInBackground(URL... urls) {
+			URL searchUrl = urls[0];
+			String githubSearchResults = null;
+
+			try {
+				githubSearchResults = NetworkUtils.getResponseFromHttpUrl(searchUrl);
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+
+			return githubSearchResults;
+		}
+
+		@Override
+		protected void onPostExecute(String s) {
+			if(s != null && !s.equals("")) {
+				mSearchResultsTextView.setText(s);
+			}
 		}
 	}
 

@@ -12,6 +12,7 @@ import android.widget.Toast;
 
 import com.example.githubquery.utilities.NetworkUtils;
 
+import java.io.IOException;
 import java.net.URL;
 
 public class MainActivity extends AppCompatActivity {
@@ -36,6 +37,13 @@ public class MainActivity extends AppCompatActivity {
 		String queryText = mSearchBoxEditText.getText().toString();
 		URL githubSearchUrl = NetworkUtils.buildUrl(queryText);
 		mUrlDisplayTextView.setText(githubSearchUrl.toString());
+		String githubSearchResults = null;
+		try {
+			githubSearchResults = NetworkUtils.getResponseFromHttpUrl(githubSearchUrl);
+			mSearchResultsTextView.setText(githubSearchResults.toString());
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 	}
 
 	@Override

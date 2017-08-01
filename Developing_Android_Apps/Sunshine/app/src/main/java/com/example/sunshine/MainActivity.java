@@ -1,11 +1,8 @@
 package com.example.sunshine;
 
 import android.os.AsyncTask;
-import android.os.Debug;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.Log;
-import android.view.View;
 import android.widget.TextView;
 import com.example.sunshine.data.SunshinePreferences;
 import com.example.sunshine.utilities.NetworkUtils;
@@ -58,8 +55,6 @@ public class MainActivity extends AppCompatActivity {
 					return null;
 				}
 
-				// String[] r = {"Valod"};
-				// r[0] = jsonWeatherResponse;
 				return simpleJsonWeatherData;
 			} catch (IOException e) {
 				e.printStackTrace();

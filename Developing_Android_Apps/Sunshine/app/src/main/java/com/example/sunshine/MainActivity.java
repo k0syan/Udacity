@@ -10,6 +10,7 @@ import android.widget.TextView;
 import com.example.sunshine.data.SunshinePreferences;
 import com.example.sunshine.utilities.NetworkUtils;
 import com.example.sunshine.utilities.OpenWeatherJsonUtils;
+import org.json.JSONException;
 
 import java.io.IOException;
 import java.net.URL;
@@ -48,12 +49,18 @@ public class MainActivity extends AppCompatActivity {
 				String jsonWeatherResponse = NetworkUtils
 						.getResponseFromHttpUrl(weatherRequestUrl);
 
-				// String[] simpleJsonWeatherData = OpenWeatherJsonUtils
-				// 		.getSimpleWeatherStringsFromJson(MainActivity.this, jsonWeatherResponse);
-				// String[] simpleJsonWeatherData = OpenWeatherJsonUtils.getSimpleWeatherStringsFromJson(MainActivity.this, jsonWeatherResponse);
-				String[] r = {"Valod"};
-				r[0] = jsonWeatherResponse;
-				return r;
+				String[] simpleJsonWeatherData = null;
+				try {
+					simpleJsonWeatherData = OpenWeatherJsonUtils
+							.getSimpleWeatherStringsFromJson(MainActivity.this, jsonWeatherResponse);
+				} catch (JSONException e) {
+					e.printStackTrace();
+					return null;
+				}
+
+				// String[] r = {"Valod"};
+				// r[0] = jsonWeatherResponse;
+				return simpleJsonWeatherData;
 			} catch (IOException e) {
 				e.printStackTrace();
 				return null;

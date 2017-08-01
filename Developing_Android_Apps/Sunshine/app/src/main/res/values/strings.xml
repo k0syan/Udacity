@@ -4,6 +4,7 @@
 	<string name="today">Today</string>
 	<string name="tomorrow">Tomorrow</string>
 	<string name="refresh">Refresh</string>
+	<string name="error_message">Something went wrong, please try again.</string>
 	<string name="format_full_friendly_date">
 		<xliff:g id="month">%1$s</xliff:g>,
 		<xliff:g id="day">%2$s</xliff:g>

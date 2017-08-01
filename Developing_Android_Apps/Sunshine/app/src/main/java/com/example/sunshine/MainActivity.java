@@ -5,6 +5,8 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import com.example.sunshine.data.SunshinePreferences;
 import com.example.sunshine.utilities.NetworkUtils;
@@ -16,7 +18,11 @@ import java.net.URL;
 
 public class MainActivity extends AppCompatActivity {
 
-	TextView mWeatherTextView;
+	private TextView mWeatherTextView;
+
+	private TextView mErrorTextView;
+
+	private ProgressBar mLoadingIndicator;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -25,15 +31,36 @@ public class MainActivity extends AppCompatActivity {
 
 		mWeatherTextView = (TextView) findViewById(R.id.tv_weather_data);
 
+		mErrorTextView = (TextView) findViewById(R.id.tv_error_message_display);
+
+		mLoadingIndicator = (ProgressBar) findViewById(R.id.pb_loading_indicator);
+
 		loadWeatherData();
 	}
 
 	private void loadWeatherData() {
+		showWeatherDataView();
 		String location = SunshinePreferences.getPreferredWeatherLocation(this);
 		new FetchWeatherTask().execute(location);
 	}
 
+	private void showWeatherDataView() {
+		mWeatherTextView.setVisibility(View.VISIBLE);
+		mErrorTextView.setVisibility(View.INVISIBLE);
+	}
+
+	private void showErrorMessage() {
+		mWeatherTextView.setVisibility(View.INVISIBLE);
+		mErrorTextView.setVisibility(View.VISIBLE);
+	}
+
 	public class FetchWeatherTask extends AsyncTask<String, Void, String[]> {
+		@Override
+		protected void onPreExecute() {
+			mLoadingIndicator.setVisibility(View.VISIBLE);
+			super.onPreExecute();
+		}
+
 		@Override
 		protected String[] doInBackground(String... params) {
 
@@ -66,10 +93,16 @@ public class MainActivity extends AppCompatActivity {
 
 		@Override
 		protected void onPostExecute(String[] weatherData) {
+
+			mLoadingIndicator.setVisibility(View.INVISIBLE);
+
 			if (weatherData != null) {
+				showWeatherDataView();
 				for (String weatherString : weatherData) {
 					mWeatherTextView.append((weatherString) + "\n\n\n");
 				}
+			} else {
+				showErrorMessage();
 			}
 		}
 	}

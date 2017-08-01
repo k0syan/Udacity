@@ -86,7 +86,6 @@ public class MainActivity extends AppCompatActivity {
 
 		@Override
 		protected void onPostExecute(String s) {
-
 			mLoadingIndicator.setVisibility(View.INVISIBLE);
 
 			if (s != null && !s.equals("")) {

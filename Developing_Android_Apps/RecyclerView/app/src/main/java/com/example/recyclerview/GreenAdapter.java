@@ -2,7 +2,6 @@ package com.example.recyclerview;
 
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -10,8 +9,6 @@ import android.widget.TextView;
 import com.example.android.recyclerview.R;
 
 public class GreenAdapter extends RecyclerView.Adapter<GreenAdapter.NumberViewHolder> {
-
-	private static final String TAG = GreenAdapter.class.getSimpleName();
 
 	private int mNumberItems;
 
@@ -24,17 +21,14 @@ public class GreenAdapter extends RecyclerView.Adapter<GreenAdapter.NumberViewHo
 		Context context = viewGroup.getContext();
 		int layoutIdForListItem = R.layout.number_list_item;
 		LayoutInflater inflater = LayoutInflater.from(context);
-		boolean shouldAttachToParentImmediately = false;
 
-		View view = inflater.inflate(layoutIdForListItem, viewGroup, shouldAttachToParentImmediately);
-		NumberViewHolder viewHolder = new NumberViewHolder(view);
+		View view = inflater.inflate(layoutIdForListItem, viewGroup, false);
 
-		return viewHolder;
+		return new NumberViewHolder(view);
 	}
 
 	@Override
 	public void onBindViewHolder(NumberViewHolder holder, int position) {
-		Log.d(TAG, "#" + position);
 		holder.bind(position);
 	}
 

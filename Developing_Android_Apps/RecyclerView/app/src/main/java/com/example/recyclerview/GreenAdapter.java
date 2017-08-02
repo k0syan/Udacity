@@ -45,13 +45,12 @@ public class GreenAdapter extends RecyclerView.Adapter<GreenAdapter.NumberViewHo
 
 	class NumberViewHolder extends RecyclerView.ViewHolder {
 
-		// Will display the position in the list, ie 0 through getItemCount() - 1
 		TextView listItemNumberView;
 
-		public NumberViewHolder(View itemView) {
+		private NumberViewHolder(View itemView) {
 			super(itemView);
 
-			listItemNumberView = (TextView) itemView.findViewById(R.id.tv_item_number);
+			listItemNumberView = itemView.findViewById(R.id.tv_item_number);
 		}
 
 		void bind(int listIndex) {

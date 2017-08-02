@@ -8,7 +8,7 @@ import com.example.android.recyclerview.R;
 
 public class MainActivity extends AppCompatActivity {
 
-	private static final int NUM_LIST_ITEMS = 100;
+	private static final int NUM_LIST_ITEMS = 50;
 
 	private GreenAdapter mAdapter;
 	private RecyclerView mNumbersList;
@@ -18,11 +18,10 @@ public class MainActivity extends AppCompatActivity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main);
 
-		mNumbersList = (RecyclerView) findViewById(R.id.rv_numbers);
+		mNumbersList = findViewById(R.id.rv_numbers);
 
 		LinearLayoutManager layoutManager = new LinearLayoutManager(this);
 		mNumbersList.setLayoutManager(layoutManager);
-
 		mNumbersList.setHasFixedSize(true);
 
 		mAdapter = new GreenAdapter(NUM_LIST_ITEMS);

@@ -1,5 +1,6 @@
 package com.example.sunshine;
 
+import android.content.Context;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -12,20 +13,16 @@ import android.view.View;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
+import android.widget.Toast;
 import com.example.sunshine.data.SunshinePreferences;
 import com.example.sunshine.utilities.NetworkUtils;
 import com.example.sunshine.utilities.OpenWeatherJsonUtils;
 
 import java.net.URL;
 
-public class MainActivity extends AppCompatActivity {
-
-	// Within ForecastAdapter.java /////////////////////////////////////////////////////////////////
-	// TODO (47) Create the default constructor (we will pass in parameters in a later lesson)
-	// Within ForecastAdapter.java /////////////////////////////////////////////////////////////////
+public class MainActivity extends AppCompatActivity implements ForecastAdapter.ForecastAdapterOnClickHandler {
 
 	private RecyclerView mRecyclerView;
-
 	private ForecastAdapter mForecastAdapter;
 
 	private TextView mErrorMessageDisplay;
@@ -37,16 +34,18 @@ public class MainActivity extends AppCompatActivity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_forecast);
 
-		mRecyclerView = findViewById(R.id.recyclerview_forecast);
+		mRecyclerView = (RecyclerView) findViewById(R.id.recyclerview_forecast);
+
 		mErrorMessageDisplay = (TextView) findViewById(R.id.tv_error_message_display);
 
-		LinearLayoutManager layoutManager = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
+		LinearLayoutManager layoutManager
+				= new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
 
 		mRecyclerView.setLayoutManager(layoutManager);
 
 		mRecyclerView.setHasFixedSize(true);
 
-		mForecastAdapter = new ForecastAdapter();
+		mForecastAdapter = new ForecastAdapter(this);
 
 		mRecyclerView.setAdapter(mForecastAdapter);
 
@@ -60,6 +59,12 @@ public class MainActivity extends AppCompatActivity {
 
 		String location = SunshinePreferences.getPreferredWeatherLocation(this);
 		new FetchWeatherTask().execute(location);
+	}
+
+	@Override
+	public void onClick(String weather) {
+		Context context = this;
+		Toast.makeText(context, weather, Toast.LENGTH_LONG).show();
 	}
 
 	private void showWeatherDataView() {
@@ -82,6 +87,7 @@ public class MainActivity extends AppCompatActivity {
 
 		@Override
 		protected String[] doInBackground(String... params) {
+
 			if (params.length == 0) {
 				return null;
 			}

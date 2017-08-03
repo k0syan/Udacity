@@ -11,16 +11,30 @@ public class ForecastAdapter extends RecyclerView.Adapter<ForecastAdapter.Foreca
 
 	private String[] mWeatherData;
 
-	public ForecastAdapter() {
+	final private ForecastAdapterOnClickHandler mClickHandler;
+
+	interface ForecastAdapterOnClickHandler {
+		void onClick(String weather);
 	}
 
-	public class ForecastAdapterViewHolder extends RecyclerView.ViewHolder {
+	public ForecastAdapter(ForecastAdapterOnClickHandler forecastAdapterOnClickHandler) {
+		mClickHandler = forecastAdapterOnClickHandler;
+	}
 
+	public class ForecastAdapterViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 		public final TextView mWeatherTextView;
 
 		public ForecastAdapterViewHolder(View view) {
 			super(view);
-			mWeatherTextView = view.findViewById(R.id.tv_weather_data);
+			mWeatherTextView = (TextView) view.findViewById(R.id.tv_weather_data);
+			view.setOnClickListener(this);
+		}
+
+		@Override
+		public void onClick(View view) {
+			int adapterPosition = getAdapterPosition();
+			String weather = mWeatherData[adapterPosition];
+			mClickHandler.onClick(weather);
 		}
 	}
 
@@ -29,9 +43,8 @@ public class ForecastAdapter extends RecyclerView.Adapter<ForecastAdapter.Foreca
 		Context context = viewGroup.getContext();
 		int layoutIdForListItem = R.layout.forecast_list_item;
 		LayoutInflater inflater = LayoutInflater.from(context);
-		boolean shouldAttachToParentImmediately = false;
 
-		View view = inflater.inflate(layoutIdForListItem, viewGroup, shouldAttachToParentImmediately);
+		View view = inflater.inflate(layoutIdForListItem, viewGroup, false);
 		return new ForecastAdapterViewHolder(view);
 	}
 
@@ -43,11 +56,12 @@ public class ForecastAdapter extends RecyclerView.Adapter<ForecastAdapter.Foreca
 
 	@Override
 	public int getItemCount() {
-		return mWeatherData != null ? mWeatherData.length : 0;
+		if (null == mWeatherData) return 0;
+		return mWeatherData.length;
 	}
 
 	public void setWeatherData(String[] weatherData) {
-		this.mWeatherData = weatherData;
+		mWeatherData = weatherData;
 		notifyDataSetChanged();
 	}
 }

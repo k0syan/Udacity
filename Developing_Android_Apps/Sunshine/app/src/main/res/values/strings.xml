@@ -1,30 +1,39 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources xmlns:xliff="http://schemas.android.com/apk/res-auto">
+
 	<string name="app_name">Sunshine</string>
-	<string name="today">Today</string>
-	<string name="tomorrow">Tomorrow</string>
-	<string name="refresh">Refresh</string>
-	<string name="error_message">Something went wrong, please try again.</string>
-	<string name="format_full_friendly_date">
-		<xliff:g id="month">%1$s</xliff:g>,
-		<xliff:g id="day">%2$s</xliff:g>
+
+	<string name="action_refresh">Refresh</string>
+
+	<string name="error_message">
+		An error has occurred. Please try again by clicking REFRESH
 	</string>
+
+
+	<string name="today">Today</string>
+
+	<string name="tomorrow">Tomorrow</string>
+
+	<string name="format_full_friendly_date">
+		<xliff:g id="month">%1$s</xliff:g>, <xliff:g id="day">%2$s</xliff:g>
+	</string>
+
 	<string name="format_temperature_celsius">
 		<xliff:g id="temp">%1.0f</xliff:g>\u00B0C
 	</string>
+
 	<string name="format_temperature_fahrenheit">
 		<xliff:g id="temp">%1.0f</xliff:g>\u00B0F
 	</string>
+
 	<string name="format_wind_kmh">
-		<xliff:g id="speed">%1$1.0f</xliff:g>
-		km/h
-		<xliff:g id="direction">%2$s</xliff:g>
+		<xliff:g id="speed">%1$1.0f</xliff:g> km/h <xliff:g id="direction">%2$s</xliff:g>
 	</string>
+
 	<string name="format_wind_mph">
-		<xliff:g id="speed">%1$1.0f</xliff:g>
-		mph
-		<xliff:g id="direction">%2$s</xliff:g>
+		<xliff:g id="speed">%1$1.0f</xliff:g> mph <xliff:g id="direction">%2$s</xliff:g>
 	</string>
+
 	<string name="condition_2xx">Storm</string>
 	<string name="condition_3xx">Drizzle</string>
 	<string name="condition_500">Light Rain</string>
@@ -82,6 +91,5 @@
 	<string name="condition_961">Violent Storm</string>
 	<string name="condition_962">Hurricane</string>
 
-	<string name="condition_unknown">Unknown (<xliff:g id="conditionId">%1$d</xliff:g>)
-	</string>
+	<string name="condition_unknown">Unknown (<xliff:g id="conditionId">%1$d</xliff:g>)</string>
 </resources>

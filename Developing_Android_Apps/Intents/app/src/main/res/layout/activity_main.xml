@@ -13,6 +13,7 @@
 
 	<EditText
 			android:id="@+id/et_text_entry"
+			android:hint="@string/child_name"
 			android:layout_width="match_parent"
 			android:layout_height="wrap_content" />
 
@@ -20,6 +21,6 @@
 			android:id="@+id/b_do_something_cool"
 			android:layout_width="wrap_content"
 			android:layout_height="wrap_content"
-			android:text="Hello World!" />
+			android:text="@string/go_to_child" />
 
 </LinearLayout>

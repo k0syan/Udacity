@@ -1,3 +1,5 @@
 <resources>
 	<string name="app_name">Intents</string>
+	<string name="child_name">Enter here child name</string>
+	<string name="go_to_child">Go to child activity</string>
 </resources>

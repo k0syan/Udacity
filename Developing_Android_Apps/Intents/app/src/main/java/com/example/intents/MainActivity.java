@@ -28,12 +28,16 @@ public class MainActivity extends AppCompatActivity {
 
 			@Override
 			public void onClick(View v) {
+				String enteredText = mNameEntry.getText().toString();
+
 				Context context = MainActivity.this;
 
 				Class destinationActivity = ChildActivity.class;
 
-				Intent intent = new Intent(context, destinationActivity);
-				startActivity(intent);
+				Intent startChildActivityIntent = new Intent(context, destinationActivity);
+				startChildActivityIntent.putExtra(Intent.EXTRA_TEXT, enteredText);
+
+				startActivity(startChildActivityIntent);
 			}
 		});
 	}

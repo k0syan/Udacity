@@ -3,6 +3,7 @@ package com.example.implicitintents;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.v4.app.ShareCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Toast;
@@ -25,14 +26,17 @@ public class MainActivity extends AppCompatActivity {
 		String addressString = "1600 Amphitheatre Parkway, CA";
 
 		Uri.Builder builder = new Uri.Builder();
-		builder.scheme("geo").path("0, 0").query(addressString);
+		builder.scheme("geo")
+				.path("0,0")
+				.query(addressString);
 		Uri addressUri = builder.build();
 
 		showMap(addressUri);
 	}
 
 	public void onClickShareTextButton(View v) {
-		Toast.makeText(this, "TODO: Share text when this is clicked", Toast.LENGTH_LONG).show();
+		String textToShare = "Text to share";
+		shareText(textToShare);
 	}
 
 	public void createYourOwn(View v) {
@@ -44,19 +48,24 @@ public class MainActivity extends AppCompatActivity {
 
 	private void openWebPage(String url) {
 		Uri webpage = Uri.parse(url);
-
-		Intent openBrowserIntent = new Intent(Intent.ACTION_VIEW, webpage);
-
-		if (openBrowserIntent.resolveActivity(getPackageManager()) != null) {
-			startActivity(openBrowserIntent);
+		Intent intent = new Intent(Intent.ACTION_VIEW, webpage);
+		if (intent.resolveActivity(getPackageManager()) != null) {
+			startActivity(intent);
 		}
 	}
 
-	private void showMap(Uri uri) {
-		Intent showMapIntent = new Intent(Intent.ACTION_VIEW, uri);
-
-		if (showMapIntent.resolveActivity(getPackageManager()) != null) {
-			startActivity(showMapIntent);
+	private void showMap(Uri geoLocation) {
+		Intent intent = new Intent(Intent.ACTION_VIEW);
+		intent.setData(geoLocation);
+		if (intent.resolveActivity(getPackageManager()) != null) {
+			startActivity(intent);
 		}
+	}
+
+	private void shareText(String textToShare) {
+		String mimeType = "text/plain";
+		String title = "Share title text";
+
+		ShareCompat.IntentBuilder.from(this).setChooserTitle(title).setType(mimeType).setText(textToShare);
 	}
 }

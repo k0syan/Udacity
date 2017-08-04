@@ -8,8 +8,6 @@ import android.view.View;
 import android.widget.Toast;
 import com.example.android.implicitintents.R;
 
-import java.net.URI;
-
 public class MainActivity extends AppCompatActivity {
 
 	@Override
@@ -19,14 +17,18 @@ public class MainActivity extends AppCompatActivity {
 	}
 
 	public void onClickOpenWebpageButton(View v) {
-
-		String link = "https://www.udacity.com";
-
-		openWebPage(link);
+		String urlAsString = "http://www.udacity.com";
+		openWebPage(urlAsString);
 	}
 
 	public void onClickOpenAddressButton(View v) {
-		Toast.makeText(this, "TODO: Open a map when this button is clicked", Toast.LENGTH_SHORT).show();
+		String addressString = "1600 Amphitheatre Parkway, CA";
+
+		Uri.Builder builder = new Uri.Builder();
+		builder.scheme("geo").path("0, 0").query(addressString);
+		Uri addressUri = builder.build();
+
+		showMap(addressUri);
 	}
 
 	public void onClickShareTextButton(View v) {
@@ -40,14 +42,21 @@ public class MainActivity extends AppCompatActivity {
 				.show();
 	}
 
-	public void openWebPage(String link) {
-		Uri uri = Uri.parse(link);
+	private void openWebPage(String url) {
+		Uri webpage = Uri.parse(url);
 
-		Intent openWebBrowser = new Intent(Intent.ACTION_VIEW, uri);
+		Intent openBrowserIntent = new Intent(Intent.ACTION_VIEW, webpage);
 
-		if (openWebBrowser.resolveActivity(getPackageManager()) != null) {
-			startActivity(openWebBrowser);
+		if (openBrowserIntent.resolveActivity(getPackageManager()) != null) {
+			startActivity(openBrowserIntent);
 		}
+	}
 
+	private void showMap(Uri uri) {
+		Intent showMapIntent = new Intent(Intent.ACTION_VIEW, uri);
+
+		if (showMapIntent.resolveActivity(getPackageManager()) != null) {
+			startActivity(showMapIntent);
+		}
 	}
 }

@@ -1,17 +1,14 @@
 package com.example.githubquery;
 
-
-import android.content.Context;
 import android.os.AsyncTask;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ProgressBar;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.example.githubquery.utilities.NetworkUtils;
 
@@ -20,12 +17,16 @@ import java.net.URL;
 
 public class MainActivity extends AppCompatActivity {
 
+	private static final String SEARCH_QUERY_URL_EXTRA = "query";
+
+	private static final String SEARCH_RESULTS_RAW_JSON = "results";
+
 	private EditText mSearchBoxEditText;
 
 	private TextView mUrlDisplayTextView;
 	private TextView mSearchResultsTextView;
 
-	private TextView errorMessageTextView;
+	private TextView mErrorMessageDisplay;
 
 	private ProgressBar mLoadingIndicator;
 
@@ -39,58 +40,63 @@ public class MainActivity extends AppCompatActivity {
 		mUrlDisplayTextView = (TextView) findViewById(R.id.tv_url_display);
 		mSearchResultsTextView = (TextView) findViewById(R.id.tv_github_search_result_json);
 
-		errorMessageTextView = (TextView) findViewById(R.id.tv_error_message_display);
+		mErrorMessageDisplay = (TextView) findViewById(R.id.tv_error_message_display);
 
 		mLoadingIndicator = (ProgressBar) findViewById(R.id.pb_loading_indicator);
+
+		// COMPLETED (9) If the savedInstanceState bundle is not null, set the text of the URL and search results TextView respectively
+		if (savedInstanceState != null) {
+			String queryUrl = savedInstanceState.getString(SEARCH_QUERY_URL_EXTRA);
+			String rawJsonSearchResults = savedInstanceState.getString(SEARCH_RESULTS_RAW_JSON);
+
+			mUrlDisplayTextView.setText(queryUrl);
+			mSearchResultsTextView.setText(rawJsonSearchResults);
+		}
 	}
 
-	void makeGithubSearchQuery() {
-		String queryText = mSearchBoxEditText.getText().toString();
-		URL githubSearchUrl = NetworkUtils.buildUrl(queryText);
+	private void makeGithubSearchQuery() {
+		String githubQuery = mSearchBoxEditText.getText().toString();
+		URL githubSearchUrl = NetworkUtils.buildUrl(githubQuery);
 		mUrlDisplayTextView.setText(githubSearchUrl.toString());
-		String githubSearchResults = null;
 		new GithubQueryTask().execute(githubSearchUrl);
 	}
 
-	void showJsonDateView() {
-		errorMessageTextView.setVisibility(View.INVISIBLE);
+	private void showJsonDataView() {
+		mErrorMessageDisplay.setVisibility(View.INVISIBLE);
 		mSearchResultsTextView.setVisibility(View.VISIBLE);
 	}
 
-	void showErrorMessage() {
-		errorMessageTextView.setVisibility(View.VISIBLE);
+	private void showErrorMessage() {
 		mSearchResultsTextView.setVisibility(View.INVISIBLE);
+		mErrorMessageDisplay.setVisibility(View.VISIBLE);
 	}
 
 	public class GithubQueryTask extends AsyncTask<URL, Void, String> {
 
 		@Override
 		protected void onPreExecute() {
-			mLoadingIndicator.setVisibility(View.VISIBLE);
 			super.onPreExecute();
+			mLoadingIndicator.setVisibility(View.VISIBLE);
 		}
 
 		@Override
-		protected String doInBackground(URL... urls) {
-			URL searchUrl = urls[0];
+		protected String doInBackground(URL... params) {
+			URL searchUrl = params[0];
 			String githubSearchResults = null;
-
 			try {
 				githubSearchResults = NetworkUtils.getResponseFromHttpUrl(searchUrl);
 			} catch (IOException e) {
 				e.printStackTrace();
 			}
-
 			return githubSearchResults;
 		}
 
 		@Override
-		protected void onPostExecute(String s) {
+		protected void onPostExecute(String githubSearchResults) {
 			mLoadingIndicator.setVisibility(View.INVISIBLE);
-
-			if (s != null && !s.equals("")) {
-				showJsonDateView();
-				mSearchResultsTextView.setText(s);
+			if (githubSearchResults != null && !githubSearchResults.equals("")) {
+				showJsonDataView();
+				mSearchResultsTextView.setText(githubSearchResults);
 			} else {
 				showErrorMessage();
 			}
@@ -105,12 +111,24 @@ public class MainActivity extends AppCompatActivity {
 
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
-		int selectedItemID = item.getItemId();
-		Context context = MainActivity.this;
-		if (selectedItemID == R.id.action_search) {
+		int itemThatWasClickedId = item.getItemId();
+		if (itemThatWasClickedId == R.id.action_search) {
 			makeGithubSearchQuery();
+			return true;
 		}
-
 		return super.onOptionsItemSelected(item);
+	}
+
+	@Override
+	protected void onSaveInstanceState(Bundle outState) {
+		super.onSaveInstanceState(outState);
+
+		String queryUrl = mUrlDisplayTextView.getText().toString();
+
+		outState.putString(SEARCH_QUERY_URL_EXTRA, queryUrl);
+
+		String rawJsonSearchResults = mSearchResultsTextView.getText().toString();
+
+		outState.putString(SEARCH_RESULTS_RAW_JSON, rawJsonSearchResults);
 	}
 }

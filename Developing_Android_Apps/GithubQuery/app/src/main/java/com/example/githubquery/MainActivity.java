@@ -18,7 +18,8 @@ import com.example.githubquery.utilities.NetworkUtils;
 import java.io.IOException;
 import java.net.URL;
 
-public class MainActivity extends AppCompatActivity implements LoaderManager.LoaderCallbacks<String> {
+public class MainActivity extends AppCompatActivity implements
+		LoaderManager.LoaderCallbacks<String> {
 
 	private static final String SEARCH_QUERY_URL_EXTRA = "query";
 
@@ -59,7 +60,7 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
 	private void makeGithubSearchQuery() {
 		String githubQuery = mSearchBoxEditText.getText().toString();
 
-		if (githubQuery.equals("")) {
+		if (TextUtils.isEmpty(githubQuery)) {
 			mUrlDisplayTextView.setText("No query entered, nothing to search for.");
 			return;
 		}
@@ -68,11 +69,9 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
 		mUrlDisplayTextView.setText(githubSearchUrl.toString());
 
 		Bundle queryBundle = new Bundle();
-
 		queryBundle.putString(SEARCH_QUERY_URL_EXTRA, githubSearchUrl.toString());
 
 		LoaderManager loaderManager = getSupportLoaderManager();
-
 		Loader<String> githubSearchLoader = loaderManager.getLoader(GITHUB_SEARCH_LOADER);
 		if (githubSearchLoader == null) {
 			loaderManager.initLoader(GITHUB_SEARCH_LOADER, queryBundle, this);
@@ -92,17 +91,21 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
 	}
 
 	@Override
-	public Loader<String> onCreateLoader(int i, final Bundle args) {
+	public Loader<String> onCreateLoader(int id, final Bundle args) {
 		return new AsyncTaskLoader<String>(this) {
+
+			// TODO (1) Create a String member variable called mGithubJson that will store the raw JSON
+
 			@Override
 			protected void onStartLoading() {
-				super.onStartLoading();
+
 				if (args == null) {
 					return;
 				}
 
 				mLoadingIndicator.setVisibility(View.VISIBLE);
 
+				// TODO (2) If mGithubJson is not null, deliver that result. Otherwise, force a load
 				forceLoad();
 			}
 
@@ -117,32 +120,33 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
 
 				try {
 					URL githubUrl = new URL(searchQueryUrlString);
-					String githubSearchResults = null;
-					githubSearchResults = NetworkUtils.getResponseFromHttpUrl(githubUrl);
+					String githubSearchResults = NetworkUtils.getResponseFromHttpUrl(githubUrl);
 					return githubSearchResults;
 				} catch (IOException e) {
 					e.printStackTrace();
 					return null;
 				}
 			}
+
+			// TODO (3) Override deliverResult and store the data in mGithubJson
+			// TODO (4) Call super.deliverResult after storing the data
 		};
 	}
 
 	@Override
 	public void onLoadFinished(Loader<String> loader, String data) {
-		mLoadingIndicator.setVisibility(View.INVISIBLE);
 
-		if (data != null && !data.equals("")) {
-			showJsonDataView();
-			mSearchResultsTextView.setText(data);
-		} else {
+		mLoadingIndicator.setVisibility(View.INVISIBLE);
+		if (null == data) {
 			showErrorMessage();
+		} else {
+			mSearchResultsTextView.setText(data);
+			showJsonDataView();
 		}
 	}
 
 	@Override
 	public void onLoaderReset(Loader<String> loader) {
-
 	}
 
 	@Override

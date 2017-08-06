@@ -1,11 +1,12 @@
 package com.example.lifecycle;
 
 import android.os.Bundle;
-import android.os.PersistableBundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
+
+import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -24,6 +25,8 @@ public class MainActivity extends AppCompatActivity {
 
 	private TextView mLifecycleDisplay;
 
+	private static final ArrayList<String> mLifecycleCallbacks = new ArrayList<>();
+
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -33,10 +36,16 @@ public class MainActivity extends AppCompatActivity {
 
 		if (savedInstanceState != null) {
 			if (savedInstanceState.containsKey(LIFECYCLE_CALLBACKS_TEXT_KEY)) {
-				String callbacks = savedInstanceState.getString(LIFECYCLE_CALLBACKS_TEXT_KEY);
-				mLifecycleDisplay.setText(callbacks);
+				String allPreviousLifecycleCallbacks = savedInstanceState
+						.getString(LIFECYCLE_CALLBACKS_TEXT_KEY);
+				mLifecycleDisplay.setText(allPreviousLifecycleCallbacks);
 			}
 		}
+
+		for (int i = mLifecycleCallbacks.size() - 1; i >= 0; i--) {
+			mLifecycleDisplay.append(mLifecycleCallbacks.get(i) + "\n");
+		}
+		mLifecycleCallbacks.clear();
 
 		logAndAppend(ON_CREATE);
 	}
@@ -66,6 +75,7 @@ public class MainActivity extends AppCompatActivity {
 	protected void onStop() {
 		super.onStop();
 
+		mLifecycleCallbacks.add(0, ON_STOP);
 		logAndAppend(ON_STOP);
 	}
 
@@ -80,15 +90,16 @@ public class MainActivity extends AppCompatActivity {
 	protected void onDestroy() {
 		super.onDestroy();
 
+		mLifecycleCallbacks.add(0, ON_DESTROY);
 		logAndAppend(ON_DESTROY);
 	}
 
 	@Override
-	public void onSaveInstanceState(Bundle outState, PersistableBundle outPersistentState) {
-		super.onSaveInstanceState(outState, outPersistentState);
+	protected void onSaveInstanceState(Bundle outState) {
+		super.onSaveInstanceState(outState);
 		logAndAppend(ON_SAVE_INSTANCE_STATE);
-		String lifecycleDisplayTextView = mLifecycleDisplay.getText().toString();
-		outState.putString(LIFECYCLE_CALLBACKS_TEXT_KEY, lifecycleDisplayTextView);
+		String lifecycleDisplayTextViewContents = mLifecycleDisplay.getText().toString();
+		outState.putString(LIFECYCLE_CALLBACKS_TEXT_KEY, lifecycleDisplayTextViewContents);
 	}
 
 	private void logAndAppend(String lifecycleEvent) {

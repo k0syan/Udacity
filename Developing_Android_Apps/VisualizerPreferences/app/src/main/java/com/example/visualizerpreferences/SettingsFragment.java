@@ -50,6 +50,8 @@ public class SettingsFragment extends PreferenceFragmentCompat implements OnShar
 			if (index >= 0) {
 				listPreference.setSummary(listPreference.getEntries()[index]);
 			}
+		} else if (preference instanceof EditTextPreference) {
+			preference.setSummary(value);
 		}
 	}
 

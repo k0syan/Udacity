@@ -18,7 +18,7 @@ import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.widget.Toast;
 
-public class VisualizerActivity extends AppCompatActivity {
+public class VisualizerActivity extends AppCompatActivity implements SharedPreferences.OnSharedPreferenceChangeListener {
 
 	private static final int MY_PERMISSION_RECORD_AUDIO_REQUEST_CODE = 88;
 	private VisualizerView mVisualizerView;
@@ -37,13 +37,12 @@ public class VisualizerActivity extends AppCompatActivity {
 
 		SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this);
 
-		mVisualizerView.setShowBass(preferences.getBoolean(getString(R.string.pref_show_bass_key),
-				getResources().getBoolean(R.bool.pref_show_bass_default)));
-
 		mVisualizerView.setShowMid(true);
 		mVisualizerView.setShowTreble(true);
 		mVisualizerView.setMinSizeScale(1);
 		mVisualizerView.setColor(getString(R.string.pref_color_red_value));
+
+		preferences.registerOnSharedPreferenceChangeListener(this);
 	}
 
 	@Override
@@ -110,5 +109,18 @@ public class VisualizerActivity extends AppCompatActivity {
 			return true;
 		}
 		return super.onOptionsItemSelected(item);
+	}
+
+	@Override
+	public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
+		if (key.equals(getString(R.string.pref_show_bass_key))) {
+			mVisualizerView.setShowBass(sharedPreferences.getBoolean(key, getResources().getBoolean(R.bool.pref_show_bass_default)));
+		}
+	}
+
+	@Override
+	protected void onDestroy() {
+		super.onDestroy();
+		PreferenceManager.getDefaultSharedPreferences(this).unregisterOnSharedPreferenceChangeListener(this);
 	}
 }

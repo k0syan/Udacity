@@ -133,7 +133,7 @@ public class VisualizerActivity extends AppCompatActivity implements SharedPrefe
 		} else if (key.equals(getString(R.string.pref_color_key))) {
 			loadColorFromPreferencies(sharedPreferences);
 		} else if (key.equals(getString(R.string.pref_size_key))) {
-			loadColorFromPreferencies(sharedPreferences);
+			loadSizeFromPreferencies(sharedPreferences);
 		}
 	}
 

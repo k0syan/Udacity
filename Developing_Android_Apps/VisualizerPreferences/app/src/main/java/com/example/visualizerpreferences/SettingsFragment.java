@@ -11,7 +11,7 @@ import android.support.v7.preference.PreferenceFragmentCompat;
 import android.support.v7.preference.PreferenceScreen;
 import android.widget.Toast;
 
-public class SettingsFragment extends PreferenceFragmentCompat implements OnSharedPreferenceChangeListener {
+public class SettingsFragment extends PreferenceFragmentCompat implements OnSharedPreferenceChangeListener, Preference.OnPreferenceChangeListener {
 
 	@Override
 	public void onCreatePreferences(Bundle bundle, String s) {
@@ -20,6 +20,9 @@ public class SettingsFragment extends PreferenceFragmentCompat implements OnShar
 
 		SharedPreferences sharedPreferences = getPreferenceScreen().getSharedPreferences();
 		PreferenceScreen preferenceScreen = getPreferenceScreen();
+
+		Preference preference = findPreference(getString(R.string.pref_size_key));
+		preference.setOnPreferenceChangeListener(this);
 
 		int count = preferenceScreen.getPreferenceCount();
 
@@ -65,5 +68,27 @@ public class SettingsFragment extends PreferenceFragmentCompat implements OnShar
 	public void onDestroy() {
 		super.onDestroy();
 		getPreferenceScreen().getSharedPreferences().unregisterOnSharedPreferenceChangeListener(this);
+	}
+
+	@Override
+	public boolean onPreferenceChange(Preference preference, Object newValue) {
+		Toast error = Toast.makeText(getContext(), "Please select a number between 0.1 and 3", Toast.LENGTH_SHORT);
+
+		String sizeKey = getString(R.string.pref_size_key);
+		if (preference.getKey().equals(sizeKey)) {
+			String stringSize = ((String) (newValue)).trim();
+			if (stringSize.equals("")) stringSize = "1";
+			try {
+				float size = Float.parseFloat(stringSize);
+				if (size > 3 || size <= 0) {
+					error.show();
+					return false;
+				}
+			} catch (NumberFormatException nfe) {
+				error.show();
+				return false;
+			}
+		}
+		return true;
 	}
 }

@@ -1,7 +1,12 @@
 package com.example.visualizerpreferences;
 
 import android.Manifest;
+import android.content.Context;
+import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import com.example.visualizerpreferences.AudioVisuals.AudioInputReader;
 import com.example.visualizerpreferences.AudioVisuals.VisualizerView;
 import android.os.Build;
@@ -28,7 +33,7 @@ public class VisualizerActivity extends AppCompatActivity {
 
 	private void defaultSetup() {
 		mVisualizerView.setShowBass(true);
-		mVisualizerView.setShowMid(true);
+		mVisualizerView.setShowMid(false);
 		mVisualizerView.setShowTreble(true);
 		mVisualizerView.setMinSizeScale(1);
 		mVisualizerView.setColor(getString(R.string.pref_color_red_value));
@@ -79,14 +84,24 @@ public class VisualizerActivity extends AppCompatActivity {
 		}
 	}
 
-	// TODO (1) Create a new Empty Activity named SettingsActivity; make sure to generate the
-	// activity_settings.xml layout file as well and add the activity to the manifest
+	@Override
+	public boolean onCreateOptionsMenu(Menu menu) {
+		MenuInflater inflater = getMenuInflater();
+		inflater.inflate(R.menu.visualizer_menu, menu);
+		return true;
+	}
 
-	// TODO (2) Add a new resource folder called menu and create visualizer_menu.xml
-	// TODO (3) In visualizer_menu.xml create a menu item with a single item. The id should be
-	// "action_settings", title should be saved in strings.xml, the item should never
-	// be shown as an action, and orderInCategory should be 100
+	@Override
+	public boolean onOptionsItemSelected(MenuItem item) {
+		int id = item.getItemId();
 
-	// TODO (5) Add the menu to the menu bar
-	// TODO (6) When the "Settings" menu item is pressed, open SettingsActivity
+		if (id == R.id.action_settings) {
+			Context context = this;
+			Class destinationClass = SettingsActivity.class;
+			Intent intentToStartDetailActivity = new Intent(context, destinationClass);
+			startActivity(intentToStartDetailActivity);
+			return true;
+		}
+		return super.onOptionsItemSelected(item);
+	}
 }

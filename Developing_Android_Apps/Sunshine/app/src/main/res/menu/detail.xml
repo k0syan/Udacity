@@ -9,5 +9,6 @@
 			android:title="@string/action_share"
 			app:showAsAction="ifRoom" />
 
-	<!--TODO (5) Add a Settings option to the detail menu-->
+	<item android:id="@+id/actions_settings"
+				android:title="@string/action_settings" />
 </menu>

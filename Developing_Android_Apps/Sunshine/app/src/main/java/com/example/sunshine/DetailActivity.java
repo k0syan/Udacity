@@ -46,8 +46,12 @@ public class DetailActivity extends AppCompatActivity {
 			ShareCompat.IntentBuilder.from(this).setChooserTitle(title).setType(mimeType).setText(mDetailTextView.getText().toString());
 		}
 
+		if (id == R.id.actions_settings) {
+			Intent startSettingsActivity = new Intent(this, SettingsActivity.class);
+			startActivity(startSettingsActivity);
+			return true;
+		}
+
 		return super.onOptionsItemSelected(item);
 	}
-
-	// TODO (7) Launch SettingsActivity when the Settings option is clicked
 }

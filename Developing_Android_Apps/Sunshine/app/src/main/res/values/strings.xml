@@ -7,6 +7,8 @@
 	<string name="action_share">Share Weather Details</string>
 	<string name="action_map">Map Location</string>
 
+	<!--TODO (3) Add a string called action_settings with value of Settings-->
+
 	<string name="error_message">
 		An error has occurred. Please try again by clicking REFRESH
 	</string>

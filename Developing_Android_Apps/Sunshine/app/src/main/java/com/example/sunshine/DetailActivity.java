@@ -48,4 +48,6 @@ public class DetailActivity extends AppCompatActivity {
 
 		return super.onOptionsItemSelected(item);
 	}
+
+	// TODO (7) Launch SettingsActivity when the Settings option is clicked
 }

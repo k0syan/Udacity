@@ -8,4 +8,6 @@
 			android:orderInCategory="1"
 			android:title="@string/action_share"
 			app:showAsAction="ifRoom" />
+
+	<!--TODO (5) Add a Settings option to the detail menu-->
 </menu>

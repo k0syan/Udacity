@@ -3,7 +3,9 @@ package com.example.visualizerpreferences;
 import android.Manifest;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
+import android.preference.PreferenceManager;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -27,13 +29,16 @@ public class VisualizerActivity extends AppCompatActivity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_visualizer);
 		mVisualizerView = (VisualizerView) findViewById(R.id.activity_visualizer);
-		defaultSetup();
+		setupSharedPreferences();
 		setupPermissions();
 	}
 
-	private void defaultSetup() {
-		mVisualizerView.setShowBass(true);
-		mVisualizerView.setShowMid(false);
+	private void setupSharedPreferences() {
+		SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this);
+
+		mVisualizerView.setShowBass(preferences.getBoolean("show_bass", true));
+
+		mVisualizerView.setShowMid(true);
 		mVisualizerView.setShowTreble(true);
 		mVisualizerView.setMinSizeScale(1);
 		mVisualizerView.setColor(getString(R.string.pref_color_red_value));
@@ -58,7 +63,7 @@ public class VisualizerActivity extends AppCompatActivity {
 	private void setupPermissions() {
 		if (ActivityCompat.checkSelfPermission(this, Manifest.permission.RECORD_AUDIO) != PackageManager.PERMISSION_GRANTED) {
 			if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-				String[] permissionsWeNeed = new String[]{ Manifest.permission.RECORD_AUDIO };
+				String[] permissionsWeNeed = new String[]{Manifest.permission.RECORD_AUDIO};
 				requestPermissions(permissionsWeNeed, MY_PERMISSION_RECORD_AUDIO_REQUEST_CODE);
 			}
 		} else {

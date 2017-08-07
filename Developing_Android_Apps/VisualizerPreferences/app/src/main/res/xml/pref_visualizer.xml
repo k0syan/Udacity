@@ -20,4 +20,12 @@
 			android:summaryOff="@string/checkbox_summary_off"
 			android:summaryOn="@string/checkbox_summary_on"
 			android:title="pref_show_mid_label" />
+
+	<!-- TODO (1) Add a list preference -->
+	<ListPreference
+			android:defaultValue="@string/pref_color_red_value"
+			android:entries="@array/pref_color_option_labels"
+			android:entryValues="@array/pref_color_option_values"
+			android:key="@string/pref_color_key"
+			android:title="@string/pref_color_label" />
 </PreferenceScreen>

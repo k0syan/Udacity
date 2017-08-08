@@ -32,12 +32,6 @@ public class MainActivity extends AppCompatActivity {
 
 	}
 
-
-	/**
-	 * This method is called when user clicks on the Add to waitlist button
-	 *
-	 * @param view The calling view (button)
-	 */
 	public void addToWaitlist(View view) {
 
 	}

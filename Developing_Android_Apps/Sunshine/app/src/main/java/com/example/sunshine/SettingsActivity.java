@@ -11,11 +11,6 @@ public class SettingsActivity extends AppCompatActivity {
 		super.onCreate(savedInstanceState);
 		this.setContentView(R.layout.activity_settings);
 		this.getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-
-		// TODO (13) Unregister SettingsFragment (this) as a SharedPreferenceChangedListener in onStop
-
-		// TODO (12) Register SettingsFragment (this) as a SharedPreferenceChangedListener in onStart
-
 	}
 
 	@Override

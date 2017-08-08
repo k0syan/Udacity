@@ -12,8 +12,11 @@ public class GuestListAdapter extends RecyclerView.Adapter<GuestListAdapter.Gues
 
 	private Context mContext;
 
-	public GuestListAdapter(Context context) {
+	public int mCount;
+
+	public GuestListAdapter(Context context, int count) {
 		this.mContext = context;
+		this.mCount = count;
 	}
 
 	@Override
@@ -28,10 +31,9 @@ public class GuestListAdapter extends RecyclerView.Adapter<GuestListAdapter.Gues
 
 	}
 
-
 	@Override
 	public int getItemCount() {
-		return 0;
+		return mCount;
 	}
 
 	class GuestViewHolder extends RecyclerView.ViewHolder {

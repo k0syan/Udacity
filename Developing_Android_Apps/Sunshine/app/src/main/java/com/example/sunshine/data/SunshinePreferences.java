@@ -1,6 +1,9 @@
 package com.example.sunshine.data;
 
 import android.content.Context;
+import android.content.SharedPreferences;
+import android.preference.PreferenceManager;
+import com.example.sunshine.R;
 
 public class SunshinePreferences {
 
@@ -16,25 +19,30 @@ public class SunshinePreferences {
 			"1600 Amphitheatre Parkway, Mountain View, CA 94043";
 
 	static public void setLocationDetails(Context c, String cityName, double lat, double lon) {
-		/** This will be implemented in a future lesson **/
 	}
 
 	static public void setLocation(Context c, String locationSetting, double lat, double lon) {
-		/** This will be implemented in a future lesson **/
 	}
 
 	static public void resetLocationCoordinates(Context c) {
-		/** This will be implemented in a future lesson **/
 	}
 
 	public static String getPreferredWeatherLocation(Context context) {
-		/** This will be implemented in a future lesson **/
-		return getDefaultWeatherLocation();
+		SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
+		String key = context.getString(R.string.pref_location_key);
+		String defaultKey = context.getString(R.string.pref_location_default);
+
+		return sharedPreferences.getString(key, defaultKey);
 	}
 
 	public static boolean isMetric(Context context) {
-		/** This will be implemented in a future lesson **/
-		return true;
+		SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
+		String keyForUnits = context.getString(R.string.pref_units_key);
+		String defaultUnits = context.getString(R.string.pref_units_metric);
+		String preferredUnits = sharedPreferences.getString(keyForUnits, defaultUnits);
+		String metric = context.getString(R.string.pref_units_metric);
+
+		return metric.equals(preferredUnits);
 	}
 
 	public static double[] getLocationCoordinates(Context context) {
@@ -42,17 +50,14 @@ public class SunshinePreferences {
 	}
 
 	public static boolean isLocationLatLonAvailable(Context context) {
-		/** This will be implemented in a future lesson **/
 		return false;
 	}
 
 	private static String getDefaultWeatherLocation() {
-		/** This will be implemented in a future lesson **/
 		return DEFAULT_WEATHER_LOCATION;
 	}
 
-	private static double[] getDefaultWeatherCoordinates() {
-		/** This will be implemented in a future lesson **/
+	public static double[] getDefaultWeatherCoordinates() {
 		return DEFAULT_WEATHER_COORDINATES;
 	}
 }

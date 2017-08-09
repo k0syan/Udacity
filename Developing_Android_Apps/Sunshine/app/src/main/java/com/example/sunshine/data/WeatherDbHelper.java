@@ -4,10 +4,13 @@ import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
+import com.example.sunshine.data.WeatherContract.WeatherEntry;
+
 public class WeatherDbHelper extends SQLiteOpenHelper {
 
 	public static final String DATABASE_NAME = "weather.db";
 
+	//  TODO (2) Increment the database version after altering the behavior of the table
 	private static final int DATABASE_VERSION = 1;
 
 	public WeatherDbHelper(Context context) {
@@ -16,25 +19,32 @@ public class WeatherDbHelper extends SQLiteOpenHelper {
 
 	@Override
 	public void onCreate(SQLiteDatabase sqLiteDatabase) {
-		final String SQL_CREATE_WAITLIST_TABLE =
-				"CREATE TABLE " +
-						WeatherContract.WeatherEntry.TABLE_NAME + " (" +
-						WeatherContract.WeatherEntry._ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
-						WeatherContract.WeatherEntry.COLUMN_DATE + " INTEGER, " +
-						WeatherContract.WeatherEntry.COLUMN_WEATHER_ID + " INTEGER, " +
-						WeatherContract.WeatherEntry.COLUMN_MIN_TEMP + " REAL, " +
-						WeatherContract.WeatherEntry.COLUMN_MAX_TEMP + " REAL, " +
-						WeatherContract.WeatherEntry.COLUMN_HUMIDITY + " REAL, " +
-						WeatherContract.WeatherEntry.COLUMN_PRESSURE + " REAL, " +
-						WeatherContract.WeatherEntry.COLUMN_WIND_SPEED + " REAL, " +
-						WeatherContract.WeatherEntry.COLUMN_DEGREES + " REAL" +
-						");";
 
-		sqLiteDatabase.execSQL(SQL_CREATE_WAITLIST_TABLE);
+		final String SQL_CREATE_WEATHER_TABLE =
+
+				"CREATE TABLE " + WeatherEntry.TABLE_NAME + " (" +
+//              TODO (1) Append NOT NULL to each column's type declaration except for the _ID
+						WeatherEntry._ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
+
+						WeatherEntry.COLUMN_DATE + " INTEGER, " +
+
+						WeatherEntry.COLUMN_WEATHER_ID + " INTEGER, " +
+
+						WeatherEntry.COLUMN_MIN_TEMP + " REAL, " +
+						WeatherEntry.COLUMN_MAX_TEMP + " REAL, " +
+
+						WeatherEntry.COLUMN_HUMIDITY + " REAL, " +
+						WeatherEntry.COLUMN_PRESSURE + " REAL, " +
+
+						WeatherEntry.COLUMN_WIND_SPEED + " REAL, " +
+						WeatherEntry.COLUMN_DEGREES + " REAL" + ");";
+
+		sqLiteDatabase.execSQL(SQL_CREATE_WEATHER_TABLE);
 	}
 
 	@Override
-	public void onUpgrade(SQLiteDatabase sqLiteDatabase, int i, int i1) {
-
+	public void onUpgrade(SQLiteDatabase sqLiteDatabase, int oldVersion, int newVersion) {
+		// TODO (3) Within onUpgrade, drop the weather table if it exists
+		// TODO (4) call onCreate and pass in the SQLiteDatabase (passed in to onUpgrade)
 	}
 }

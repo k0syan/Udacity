@@ -9,7 +9,7 @@ import com.example.sunshine.data.WeatherContract.WeatherEntry;
 public class WeatherDbHelper extends SQLiteOpenHelper {
 
 	public static final String DATABASE_NAME = "weather.db";
-
+	//  TODO (2) Increment the database version after changing the create table statement
 	private static final int DATABASE_VERSION = 2;
 
 	public WeatherDbHelper(Context context) {
@@ -30,7 +30,7 @@ public class WeatherDbHelper extends SQLiteOpenHelper {
 						WeatherEntry.COLUMN_PRESSURE + " REAL NOT NULL, " +
 						WeatherEntry.COLUMN_WIND_SPEED + " REAL NOT NULL, " +
 						WeatherEntry.COLUMN_DEGREES + " REAL NOT NULL" + ");";
-
+//              TODO (1) Add a UNIQUE constraint on the date column to replace on conflict
 		sqLiteDatabase.execSQL(SQL_CREATE_WEATHER_TABLE);
 	}
 

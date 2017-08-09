@@ -13,8 +13,8 @@ import com.example.waitlist.data.WaitlistContract;
 
 public class GuestListAdapter extends RecyclerView.Adapter<GuestListAdapter.GuestViewHolder> {
 
-	private Context mContext;
 	private Cursor mCursor;
+	private Context mContext;
 
 	public GuestListAdapter(Context context, Cursor cursor) {
 		this.mContext = context;
@@ -30,20 +30,29 @@ public class GuestListAdapter extends RecyclerView.Adapter<GuestListAdapter.Gues
 
 	@Override
 	public void onBindViewHolder(GuestViewHolder holder, int position) {
-		if (!mCursor.moveToPosition(position)) {
+		if (!mCursor.moveToPosition(position))
 			return;
-		}
 
-		String guestName = mCursor.getString(mCursor.getColumnIndex(WaitlistContract.WaitlistEntry.COLUMN_GUEST_NAME));
+		String name = mCursor.getString(mCursor.getColumnIndex(WaitlistContract.WaitlistEntry.COLUMN_GUEST_NAME));
 		int partySize = mCursor.getInt(mCursor.getColumnIndex(WaitlistContract.WaitlistEntry.COLUMN_PARTY_SIZE));
 
-		holder.nameTextView.setText(guestName);
+		holder.nameTextView.setText(name);
 		holder.partySizeTextView.setText(String.valueOf(partySize));
 	}
 
 	@Override
 	public int getItemCount() {
 		return mCursor.getCount();
+	}
+
+	public void swapCursor(Cursor cursor) {
+		if (mCursor != null) {
+			mCursor.close();
+		}
+		mCursor = cursor;
+		if (mCursor != null) {
+			this.notifyDataSetChanged();
+		}
 	}
 
 	class GuestViewHolder extends RecyclerView.ViewHolder {

@@ -2,12 +2,12 @@ package com.example.waitlist;
 
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
-import android.database.sqlite.SQLiteOpenHelper;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
+
 import com.example.waitlist.data.TestUtil;
 import com.example.waitlist.data.WaitlistContract;
 import com.example.waitlist.data.WaitlistDbHelper;
@@ -18,6 +18,7 @@ public class MainActivity extends AppCompatActivity {
 	private GuestListAdapter mAdapter;
 
 	private SQLiteDatabase mDb;
+
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -30,19 +31,16 @@ public class MainActivity extends AppCompatActivity {
 
 		waitlistRecyclerView.setLayoutManager(new LinearLayoutManager(this));
 
-		mAdapter = new GuestListAdapter(this, 0);
+		WaitlistDbHelper dbHelper = new WaitlistDbHelper(this);
 
-		WaitlistDbHelper waitlistDbHelper = new WaitlistDbHelper(this);
-
-		mDb = waitlistDbHelper.getWritableDatabase();
+		mDb = dbHelper.getWritableDatabase();
 
 		TestUtil.insertFakeData(mDb);
 
-		Cursor results = getAllGuests();
+		Cursor cursor = getAllGuests();
 
-		mAdapter.mCount = results.getCount();
+		mAdapter = new GuestListAdapter(this, cursor);
 
-		// Link the adapter to the RecyclerView
 		waitlistRecyclerView.setAdapter(mAdapter);
 
 	}
@@ -52,12 +50,14 @@ public class MainActivity extends AppCompatActivity {
 	}
 
 	private Cursor getAllGuests() {
-		return mDb.query(WaitlistContract.WaitlistEntry.TABLE_NAME,
+		return mDb.query(
+				WaitlistContract.WaitlistEntry.TABLE_NAME,
 				null,
 				null,
 				null,
 				null,
 				null,
-				WaitlistContract.WaitlistEntry.COLUMN_TIMESTAMP);
+				WaitlistContract.WaitlistEntry.COLUMN_TIMESTAMP
+		);
 	}
 }

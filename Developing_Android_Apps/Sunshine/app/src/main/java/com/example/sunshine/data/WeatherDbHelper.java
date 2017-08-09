@@ -10,8 +10,7 @@ public class WeatherDbHelper extends SQLiteOpenHelper {
 
 	public static final String DATABASE_NAME = "weather.db";
 
-	//  TODO (2) Increment the database version after altering the behavior of the table
-	private static final int DATABASE_VERSION = 1;
+	private static final int DATABASE_VERSION = 2;
 
 	public WeatherDbHelper(Context context) {
 		super(context, DATABASE_NAME, null, DATABASE_VERSION);
@@ -21,30 +20,23 @@ public class WeatherDbHelper extends SQLiteOpenHelper {
 	public void onCreate(SQLiteDatabase sqLiteDatabase) {
 
 		final String SQL_CREATE_WEATHER_TABLE =
-
 				"CREATE TABLE " + WeatherEntry.TABLE_NAME + " (" +
-//              TODO (1) Append NOT NULL to each column's type declaration except for the _ID
 						WeatherEntry._ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
-
-						WeatherEntry.COLUMN_DATE + " INTEGER, " +
-
-						WeatherEntry.COLUMN_WEATHER_ID + " INTEGER, " +
-
-						WeatherEntry.COLUMN_MIN_TEMP + " REAL, " +
-						WeatherEntry.COLUMN_MAX_TEMP + " REAL, " +
-
-						WeatherEntry.COLUMN_HUMIDITY + " REAL, " +
-						WeatherEntry.COLUMN_PRESSURE + " REAL, " +
-
-						WeatherEntry.COLUMN_WIND_SPEED + " REAL, " +
-						WeatherEntry.COLUMN_DEGREES + " REAL" + ");";
+						WeatherEntry.COLUMN_DATE + " INTEGER NOT NULL, " +
+						WeatherEntry.COLUMN_WEATHER_ID + " INTEGER NOT NULL, " +
+						WeatherEntry.COLUMN_MIN_TEMP + " REAL NOT NULL, " +
+						WeatherEntry.COLUMN_MAX_TEMP + " REAL NOT NULL, " +
+						WeatherEntry.COLUMN_HUMIDITY + " REAL NOT NULL, " +
+						WeatherEntry.COLUMN_PRESSURE + " REAL NOT NULL, " +
+						WeatherEntry.COLUMN_WIND_SPEED + " REAL NOT NULL, " +
+						WeatherEntry.COLUMN_DEGREES + " REAL NOT NULL" + ");";
 
 		sqLiteDatabase.execSQL(SQL_CREATE_WEATHER_TABLE);
 	}
 
 	@Override
 	public void onUpgrade(SQLiteDatabase sqLiteDatabase, int oldVersion, int newVersion) {
-		// TODO (3) Within onUpgrade, drop the weather table if it exists
-		// TODO (4) call onCreate and pass in the SQLiteDatabase (passed in to onUpgrade)
+		sqLiteDatabase.execSQL("DROP TABLE IF EXISTS " + WeatherEntry.TABLE_NAME);
+		onCreate(sqLiteDatabase);
 	}
 }

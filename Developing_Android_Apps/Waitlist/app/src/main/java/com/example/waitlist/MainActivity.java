@@ -24,8 +24,7 @@ public class MainActivity extends AppCompatActivity {
 	private EditText mNewGuestNameEditText;
 	private EditText mNewPartySizeEditText;
 
-	// TODO (13) Create a constant string LOG_TAG that is equal to the class.getSimpleName()
-	// private final String LOG_TAG = class.getSimpleName();
+	private final static String LOG_TAG = MainActivity.class.getSimpleName();
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -64,7 +63,7 @@ public class MainActivity extends AppCompatActivity {
 		try {
 			partySize = Integer.parseInt(mNewPartySizeEditText.getText().toString());
 		} catch (Exception exception) {
-			exception.printStackTrace();
+			Log.e(LOG_TAG, "Failed to parse party size text to number: " + exception.getMessage());
 		}
 
 		addNewGuest(mNewGuestNameEditText.getText().toString(), partySize);

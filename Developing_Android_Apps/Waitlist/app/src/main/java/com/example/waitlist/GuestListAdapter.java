@@ -10,7 +10,6 @@ import android.widget.TextView;
 
 import com.example.waitlist.data.WaitlistContract;
 
-
 public class GuestListAdapter extends RecyclerView.Adapter<GuestListAdapter.GuestViewHolder> {
 
 	private Cursor mCursor;
@@ -35,9 +34,11 @@ public class GuestListAdapter extends RecyclerView.Adapter<GuestListAdapter.Gues
 
 		String name = mCursor.getString(mCursor.getColumnIndex(WaitlistContract.WaitlistEntry.COLUMN_GUEST_NAME));
 		int partySize = mCursor.getInt(mCursor.getColumnIndex(WaitlistContract.WaitlistEntry.COLUMN_PARTY_SIZE));
+		long id = mCursor.getLong(mCursor.getColumnIndex(WaitlistContract.WaitlistEntry._ID));
 
 		holder.nameTextView.setText(name);
 		holder.partySizeTextView.setText(String.valueOf(partySize));
+		holder.itemView.setTag(id);
 	}
 
 	@Override
@@ -45,12 +46,12 @@ public class GuestListAdapter extends RecyclerView.Adapter<GuestListAdapter.Gues
 		return mCursor.getCount();
 	}
 
-	public void swapCursor(Cursor cursor) {
-		if (mCursor != null) {
-			mCursor.close();
-		}
-		mCursor = cursor;
-		if (mCursor != null) {
+	public void swapCursor(Cursor newCursor) {
+		// Always close the previous mCursor first
+		if (mCursor != null) mCursor.close();
+		mCursor = newCursor;
+		if (newCursor != null) {
+			// Force the RecyclerView to refresh
 			this.notifyDataSetChanged();
 		}
 	}
@@ -65,6 +66,5 @@ public class GuestListAdapter extends RecyclerView.Adapter<GuestListAdapter.Gues
 			nameTextView = (TextView) itemView.findViewById(R.id.name_text_view);
 			partySizeTextView = (TextView) itemView.findViewById(R.id.party_size_text_view);
 		}
-
 	}
 }

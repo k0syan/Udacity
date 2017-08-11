@@ -11,6 +11,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 import com.example.hydrationreminder.sync.ReminderTasks;
 import com.example.hydrationreminder.sync.WaterReminderIntentService;
+import com.example.hydrationreminder.utilities.NotificationUtils;
 import com.example.hydrationreminder.utilities.PreferenceUtilities;
 
 public class MainActivity extends AppCompatActivity implements
@@ -60,7 +61,9 @@ public class MainActivity extends AppCompatActivity implements
 		startService(incrementWaterCountIntent);
 	}
 
-	// TODO (14) Create a method called testNotification that triggers NotificationUtils' remindUserBecauseCharging
+	public void testNotification(View view) {
+		NotificationUtils.remindUserBecauseCharging(this);
+	}
 
 	@Override
 	protected void onDestroy() {

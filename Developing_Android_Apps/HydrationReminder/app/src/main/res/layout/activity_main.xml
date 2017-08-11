@@ -84,5 +84,7 @@
 				android:layout_toRightOf="@id/iv_power_increment"
 				android:text="@string/default_charge_notification_count" />
 
+		<!-- TODO (13) Add a button for testing your notification with an onClick method called testNotification -->
+
 	</RelativeLayout>
 </LinearLayout>

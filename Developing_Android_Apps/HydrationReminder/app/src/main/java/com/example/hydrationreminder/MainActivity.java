@@ -1,7 +1,7 @@
 package com.example.hydrationreminder;
 
-import android.content.Intent;
-import android.content.SharedPreferences;
+import android.content.*;
+import android.drm.DrmStore;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.v7.app.AppCompatActivity;
@@ -23,6 +23,8 @@ public class MainActivity extends AppCompatActivity implements
 	private ImageView mChargingImageView;
 
 	private Toast mToast;
+	IntentFilter mChargingFilter;
+	ChargingBroadcastReceiver mChargingReciever;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -40,6 +42,24 @@ public class MainActivity extends AppCompatActivity implements
 
 		SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
 		prefs.registerOnSharedPreferenceChangeListener(this);
+
+		mChargingFilter = new IntentFilter();
+		mChargingFilter.addAction(Intent.ACTION_POWER_CONNECTED);
+		mChargingFilter.addAction(Intent.ACTION_POWER_DISCONNECTED);
+
+		mChargingReciever = new ChargingBroadcastReceiver();
+	}
+
+	@Override
+	protected void onResume() {
+		super.onResume();
+		registerReceiver(mChargingReciever, mChargingFilter);
+	}
+
+	@Override
+	protected void onPause() {
+		super.onPause();
+		unregisterReceiver(mChargingReciever);
 	}
 
 	private void updateWaterCount() {
@@ -52,6 +72,14 @@ public class MainActivity extends AppCompatActivity implements
 		String formattedChargingReminders = getResources().getQuantityString(
 				R.plurals.charge_notification_count, chargingReminders, chargingReminders);
 		mChargingCountDisplay.setText(formattedChargingReminders);
+	}
+
+	private void showCharging(boolean isCharging) {
+		if (isCharging) {
+			mChargingImageView.setImageResource(R.drawable.ic_power_pink_80px);
+		} else {
+			mChargingImageView.setImageResource(R.drawable.ic_power_grey_80px);
+		}
 	}
 
 	public void incrementWater(View view) {
@@ -77,6 +105,16 @@ public class MainActivity extends AppCompatActivity implements
 			updateWaterCount();
 		} else if (PreferenceUtilities.KEY_CHARGING_REMINDER_COUNT.equals(key)) {
 			updateChargingReminderCount();
+		}
+	}
+
+	private class ChargingBroadcastReceiver extends BroadcastReceiver {
+
+		@Override
+		public void onReceive(Context context, Intent intent) {
+			String action = intent.getAction();
+			boolean isCharging = action.equals(Intent.ACTION_POWER_CONNECTED);
+			showCharging(isCharging);
 		}
 	}
 }

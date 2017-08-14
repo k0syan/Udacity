@@ -16,7 +16,7 @@ import java.util.concurrent.TimeUnit;
 
 public class ReminderUtilities {
 
-	private static final int REMINDER_INTERVAL_SECONDS = 1;
+	private static final int REMINDER_INTERVAL_SECONDS = 15;
 
 	private static final int SYNC_FLEXTIME_SECONDS = (int) (TimeUnit.MINUTES.toSeconds(REMINDER_INTERVAL_SECONDS));
 

@@ -2,6 +2,8 @@ package com.example.hydrationreminder;
 
 import android.content.*;
 import android.drm.DrmStore;
+import android.os.BatteryManager;
+import android.os.Build;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.v7.app.AppCompatActivity;
@@ -53,6 +55,18 @@ public class MainActivity extends AppCompatActivity implements
 	@Override
 	protected void onResume() {
 		super.onResume();
+		boolean isCharging;
+		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+			BatteryManager batteryManager = (BatteryManager) getSystemService(BATTERY_SERVICE);
+			isCharging = batteryManager.isCharging();
+		} else {
+			IntentFilter ifilter = new IntentFilter(Intent.ACTION_BATTERY_CHANGED);
+			Intent batteryStatus = this.registerReceiver(null, ifilter);
+			int status = batteryStatus.getIntExtra(BatteryManager.EXTRA_STATUS, -1);
+			isCharging = status == BatteryManager.BATTERY_STATUS_CHARGING || status == BatteryManager.BATTERY_STATUS_FULL;
+		}
+		showCharging(isCharging);
+
 		registerReceiver(mChargingReciever, mChargingFilter);
 	}
 
@@ -64,7 +78,7 @@ public class MainActivity extends AppCompatActivity implements
 
 	private void updateWaterCount() {
 		int waterCount = PreferenceUtilities.getWaterCount(this);
-		mWaterCountDisplay.setText(waterCount+"");
+		mWaterCountDisplay.setText(waterCount + "");
 	}
 
 	private void updateChargingReminderCount() {
